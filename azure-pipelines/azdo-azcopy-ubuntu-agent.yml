@@ -11,6 +11,12 @@ trigger:
 
 variables:
   - group: SAS_GROUP
+  - name: 'rgName'
+    value: 'rg-tf-state102-uat02'
+  - name: 'storageAccount'
+    value: 'sttfstate259'
+  - name: 'container'
+    value: 'azcopyazpipelineubuntu'
 
 stages:
   - stage: 'AzCopy_Ubuntu_Agent'
@@ -26,5 +32,19 @@ stages:
             fetchDepth: 0
 
           - script: |
-              azcopy copy "./seed_images/*" "https://sttfstate259.blob.core.windows.net/azcopylocalwindows?$(SAS)" --recursive=true
+              azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)?$(SAS)" --recursive=true
             displayName: 'AzCopy Ubuntu Agent'
+
+          - task: AzureCLI@2
+            displayName: 'AzCopy via Azure CLI'
+            inputs:
+              azureSubscription: 'AzCopyARM'
+              scriptType: 'pscore'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                $Date = (Get-Date).AddDays(1).ToString('yyyy-MM-dd')
+                $key = $( az storage account keys list --resource-group $(rgName) --account-name $(storageAccount) --query [0].value -o tsv )
+                Write-Output "Key: $key"
+                $sas = $( az storage container generate-sas --name $(container) --expiry $Date --permissions "racwdli" --account-name $(storageAccount) --account-key "$key" )
+                Write-Output "SAS: $sas"
+                azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/from_az_cli?$(SAS)" --recursive=true
