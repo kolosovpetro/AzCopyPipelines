@@ -1,0 +1,30 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - '*'
+
+#trigger: none
+
+variables:
+  - group: SAS_GROUP
+
+stages:
+  - stage: 'AzCopy_Ubuntu_Agent'
+    displayName: 'AzCopy Ubuntu Agent'
+    jobs:
+      - job: 'Build'
+        displayName: 'AzCopy Ubuntu Agent'
+        pool:
+          vmImage: 'ubuntu-latest'
+        
+        steps:
+          - checkout: self
+            fetchDepth: 0
+
+          - script: |
+              azcopy copy "./seed_images/*" "https://sttfstate259.blob.core.windows.net/azcopylocalwindows?$(SAS)" --recursive=true
+            displayName: 'AzCopy Ubuntu Agent'
