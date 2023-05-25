@@ -3,6 +3,8 @@
 Azure pipelines and GitHub Actions involving AzCopy utility.
 
 - Trello task: https://trello.com/c/F7ceTapf
+- Azure DevOps project: https://dev.azure.com/PetroKolosovProjects/AzCopyPipelines
+- AzCLI GitHub Action: https://github.com/marketplace/actions/azure-cli-action
 
 ## Install AzCopy Linux
 

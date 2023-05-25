@@ -34,6 +34,7 @@ stages:
           - script: |
               azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)?$(SAS)" --recursive=true
             displayName: 'AzCopy Ubuntu Agent'
+            continueOnError: true
 
           - task: AzureCLI@2
             displayName: 'AzCopy via Azure CLI'
@@ -47,4 +48,4 @@ stages:
                 Write-Output "Key: $key"
                 $sas = $( az storage container generate-sas --name $(container) --expiry $Date --permissions "racwdli" --account-name $(storageAccount) --account-key "$key" )
                 Write-Output "SAS: $sas"
-                azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/from_az_cli?$(SAS)" --recursive=true
+                azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/from_az_cli?$(sas)" --recursive=true
