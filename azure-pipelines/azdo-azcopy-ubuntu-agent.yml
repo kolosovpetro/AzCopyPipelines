@@ -32,6 +32,7 @@ stages:
             fetchDepth: 0
 
           - script: |
+              az storage container create --name $(container)  --account-name $(storageAccount) --sas-token "$(SAS)"
               azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)?$(SAS)" --recursive=true
             displayName: 'AzCopy Ubuntu Agent'
             continueOnError: true
@@ -46,6 +47,7 @@ stages:
                 $Date = (Get-Date).AddDays(1).ToString('yyyy-MM-dd')
                 $key = $( az storage account keys list --resource-group $(rgName) --account-name $(storageAccount) --query [0].value -o tsv )
                 Write-Output "Key: $key"
+                az storage container create --name $(container)  --account-name $(storageAccount) --account-key "$key"
                 $sas = $( az storage container generate-sas --name $(container) --expiry $Date --permissions "racwdli" --account-name $(storageAccount) --account-key "$key" )
                 Write-Output "SAS: $sas"
                 azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/from_az_cli?$(sas)" --recursive=true
