@@ -32,10 +32,14 @@ stages:
             fetchDepth: 0
 
           - script: |
-              az storage container create --name $(container)  --account-name $(storageAccount) --sas-token "$(SAS)"
+              az storage container create --name $(container) --account-name $(storageAccount) --sas-token "$(SAS)"
               azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)?$(SAS)" --recursive=true
             displayName: 'AzCopy Ubuntu Agent'
             continueOnError: true
+
+          - script: |
+              cat *log
+            workingDirectory: /home/vsts/.azcopy/
 
           - task: AzureCLI@2
             displayName: 'AzCopy via Azure CLI'
