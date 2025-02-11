@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -40,8 +40,8 @@ jobs:
           az storage container create --name ${{ env.container }}  --account-name ${{ env.storageAccount }} --account-key "$key"
           $sas = $( az storage container generate-sas --name ${{ env.container }} --expiry $Date --permissions "racwdli" --account-name ${{ env.storageAccount }} --account-key "$key" ).Replace("`"","")
           azcopy copy "./seed_images/*" "https://${{ env. storageAccount }}.blob.core.windows.net/${{ env.container }}/from_gha_cli?$sas" --recursive=true
-          
-      - name: Get log
+
+      - name: Print log
         working-directory: /home/runner/.azcopy
         run: |
           cat *.log
