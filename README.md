@@ -9,6 +9,7 @@ Azure pipelines and GitHub Actions involving AzCopy utility.
 - Create a container for AzCopy tests
 - Generate SAS token for test container
 - Configure SAS token inside variable group in Azure DevOps
+- Configure SAS token inside secrets in GitHub
 
 ## AzCopy log file locations
 
