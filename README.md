@@ -12,8 +12,10 @@ Azure pipelines and GitHub Actions involving AzCopy utility.
 
 ## Steps
 
-- Configure SAS token inside variable group in Azure DevOps
 - Configure ARM service connection in Azure DevOps
+- Create a container for AzCopy tests
+- Generate SAS token for test container
+- Configure SAS token inside variable group in Azure DevOps
 
 ## Install AzCopy Linux
 
