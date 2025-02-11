@@ -16,7 +16,7 @@ jobs:
     env:
       STORAGE_ACCOUNT: storterraformd01
       CONTAINER: azcopycontainer
-      AZCOPY_LOG_PATH: C:/Users/VssAdministrator/.azcopy
+      AZCOPY_LOG_PATH: C:/Users/runneradmin/.azcopy
       SAS_TOKEN: ${{ secrets.SAS_TOKEN }}
 
     steps:

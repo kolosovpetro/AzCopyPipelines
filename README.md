@@ -14,7 +14,7 @@ Azure pipelines and GitHub Actions involving AzCopy utility.
 
 - Azure DevOps Windows: `C:/Users/VssAdministrator/.azcopy`
 - Azure DevOps Linux: `/home/vsts/.azcopy/`
-- GitHub Actions Windows:
+- GitHub Actions Windows: `C:/Users/runneradmin/.azcopy`
 - GitHub Actions Linux: `/home/runner/.azcopy`
 
 ## Install AzCopy Linux
