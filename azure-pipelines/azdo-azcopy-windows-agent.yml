@@ -16,7 +16,7 @@ variables:
   - name: 'container'
     value: 'azcopycontainer'
   - name: 'StageName'
-    value: 'AzCopy_Ubuntu_Agent_Test'
+    value: 'AzCopy_Windows_Agent_Test'
   - name: AgentImage
     value: windows-latest
   - name: AzCopyLogPath
