@@ -1,6 +1,6 @@
-# `AzCopy` &mdash; Example via Azure Pipelines
+# `AzCopy` &mdash; Example using GitHub Actions and Azure Pipelines
 
-Azure pipelines and GitHub Actions involving AzCopy utility.
+Using `AzCopy` inside `GitHub Actions` and `Azure Pipelines`
 
 - https://dev.azure.com/PetroKolosovProjects/AzCopyPipelines
 
