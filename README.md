@@ -15,7 +15,11 @@ Azure pipelines and GitHub Actions involving AzCopy utility.
 - Create a container for AzCopy tests
 - Generate SAS token for test container
 - Configure SAS token inside variable group in Azure DevOps
-- Configure ARM service connection in Azure DevOps
+
+## AzCopy log file locations
+
+- Windows: `C:/Users/VssAdministrator/.azcopy`
+- Linux: `/home/vsts/.azcopy/`
 
 ## Install AzCopy Linux
 

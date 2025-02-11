@@ -21,3 +21,10 @@ $SourceFolderForAzCopy = "$SourceFolderAbsPath\*"
 Write-Host "Source folder for Az Copy: $SourceFolderForAzCopy"
 
 azcopy copy "$SourceFolderForAzCopy" "$TargetUrl" --recursive=true
+
+# example of call
+#.\upload-to-azure.ps1 -SourceFolder "C:\Users\YourUser\test-images" `
+#                       -StorageAccount "storterraformd01" `
+#                       -StorageContainer "azcopycontainer" `
+#                       -SasToken $env:SAS_TOKEN `
+#                       -TargetFolderPrefix "from-powershell"

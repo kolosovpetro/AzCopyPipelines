@@ -15,44 +15,56 @@ variables:
     value: 'storterraformd01'
   - name: 'container'
     value: 'azcopycontainer'
+  - name: 'StageName'
+    value: 'AzCopy_Ubuntu_Agent_Test'
+  - name: AgentImage
+    value: ubuntu-latest
+  - name: AzCopyLogPath
+    value: '/home/vsts/.azcopy/'
 
 stages:
-  - stage: 'AzCopy_Ubuntu_Agent'
-    displayName: 'AzCopy Ubuntu Agent'
+  - stage: ${{ variables.StageName }}
+    displayName: ${{ variables.StageName }}
     jobs:
-      - job: 'Build'
-        displayName: 'AzCopy Ubuntu Agent'
+      - job: ${{ variables.StageName }}
+        displayName: ${{ variables.StageName }}
         pool:
-          vmImage: 'windows-latest'
+          vmImage: ${{ variables.AgentImage }}
 
         steps:
           - checkout: self
             fetchDepth: 0
 
-          - script: |
-              azcopy env
-            displayName: 'Print AzCopy ENV'
-
           - task: PowerShell@2
-            displayName: 'AzCopy Ubuntu Agent'
+            displayName: 'Print AzCopy ENV ${{ variables.AgentImage }}'
             inputs:
               targetType: 'inline'
-              script: |
-                azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu?$(sas-token)" --recursive=true
               pwsh: true
+              script: azcopy env
+
+          - task: PowerShell@2
+            displayName: 'AzCopy PowerShell ${{ variables.AgentImage }}'
             continueOnError: true
-
-
-          - script: |
-              cat *log
-            displayName: 'Print log output'
-            workingDirectory: C:/Users/VssAdministrator/.azcopy
-
-          - task: AzureCLI@2
-            displayName: 'AzCopy via Azure CLI'
             inputs:
-              azureSubscription: 'AzureServiceConnection'
-              scriptType: 'pscore'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu-az-cli?$(sas-token)" --recursive=true
+              targetType: 'filePath'
+              pwsh: true
+              filePath: '$(System.DefaultWorkingDirectory)/AzCopy-Wrapper.ps1'
+              arguments: >
+                -SourceFolder "$(System.DefaultWorkingDirectory)/test-images"
+                -StorageAccount "${{ variables.storageAccount }}"
+                -StorageContainer "${{ variables.container }}"
+                -SasToken "$(sas-token)"
+                -TargetFolderPrefix "from-powershell"
+
+          - task: PowerShell@2
+            displayName: 'Print AzCopy Logs ${{ variables.AgentImage }}'
+            inputs:
+              targetType: 'inline'
+              pwsh: true
+              script: |
+                $LogPath = ${{ variables.AzCopyLogPath }}
+                $LogFiles = Get-ChildItem -Path $LogPath -Filter "*.log"
+                foreach ($file in $LogFiles) {
+                    Write-Host "`n--- Contents of: $($file.FullName) ---`n"
+                    Get-Content $file.FullName
+                }
