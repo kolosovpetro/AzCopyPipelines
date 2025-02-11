@@ -54,7 +54,7 @@ stages:
                 -StorageAccount "${{ variables.storageAccount }}"
                 -StorageContainer "${{ variables.container }}"
                 -SasToken "$(sas-token)"
-                -TargetFolderPrefix "from-powershell"
+                -TargetFolderPrefix "from-azdo-ubuntu"
 
           - task: PowerShell@2
             displayName: 'Print AzCopy Logs ${{ variables.AgentImage }}'
