@@ -62,7 +62,7 @@ stages:
               targetType: 'inline'
               pwsh: true
               script: |
-                $LogPath = ${{ variables.AzCopyLogPath }}
+                $LogPath = "${{ variables.AzCopyLogPath }}"
                 $LogFiles = Get-ChildItem -Path $LogPath -Filter "*.log"
                 foreach ($file in $LogFiles) {
                     Write-Host "`n--- Contents of: $($file.FullName) ---`n"
