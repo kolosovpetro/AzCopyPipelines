@@ -12,7 +12,6 @@ on:
   workflow_dispatch:
 
 env:
-  rgName: rg-terraform-state
   storageAccount: storterraformd01
   container: azcopycontainer
 
@@ -30,7 +29,7 @@ jobs:
         continue-on-error: true
         shell: pwsh
         run: |
-          azcopy copy "./seed_images/*" "https://${{ env. storageAccount }}.blob.core.windows.net/${{ env.container }}/gha-ubuntu?$SAS_TOKEN" --recursive=true
+          azcopy copy "./seed_images/*" "https://${{ env.storageAccount }}.blob.core.windows.net/${{ env.container }}/gha-ubuntu?$SAS_TOKEN" --recursive=true
         env:
           SAS_TOKEN: ${{ secrets.SAS_TOKEN }}
 
