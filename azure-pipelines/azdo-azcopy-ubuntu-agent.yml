@@ -30,7 +30,12 @@ stages:
             fetchDepth: 0
 
           - script: |
-              azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu?$(sas-token)" --recursive=true
+              azcopy env
+            displayName: 'Print AzCopy ENV'
+            workingDirectory: /home/vsts/.azcopy/
+
+          - script: |
+              azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu?$(sas-token)" --recursive=true
             displayName: 'AzCopy Ubuntu Agent'
             continueOnError: true
 
@@ -46,4 +51,4 @@ stages:
               scriptType: 'pscore'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu-az-cli?$(sas-token)" --recursive=true
+                azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu-az-cli?$(sas-token)" --recursive=true

@@ -24,7 +24,7 @@ stages:
         steps:
           - task: AzureFileCopy@4
             inputs:
-              SourcePath: '$(System.DefaultWorkingDirectory)/seed_images/*'
+              SourcePath: '$(System.DefaultWorkingDirectory)/test-images/*'
               azureSubscription: 'AzureServiceConnection'
               Destination: 'AzureBlob'
               storage: 'storterraformd01'
