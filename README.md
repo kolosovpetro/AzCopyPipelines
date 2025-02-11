@@ -4,12 +4,6 @@ Azure pipelines and GitHub Actions involving AzCopy utility.
 
 - https://dev.azure.com/PetroKolosovProjects/AzCopyPipelines
 
-## Azure DevOps tasks and GHA used
-
-- [AzureFileCopy@4 - Azure file copy v4 task](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-file-copy-v4?view=azure-pipelines)
-- [AzureCLI@2 - Azure CLI v2 task](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines)
-- [Azure/login Action](https://github.com/Azure/login)
-
 ## Steps
 
 - Create a container for AzCopy tests
@@ -18,8 +12,10 @@ Azure pipelines and GitHub Actions involving AzCopy utility.
 
 ## AzCopy log file locations
 
-- Windows: `C:/Users/VssAdministrator/.azcopy`
-- Linux: `/home/vsts/.azcopy/`
+- Azure DevOps Windows: `C:/Users/VssAdministrator/.azcopy`
+- Azure DevOps Linux: `/home/vsts/.azcopy/`
+- GitHub Actions Windows:
+- GitHub Actions Linux: `/home/runner/.azcopy`
 
 ## Install AzCopy Linux
 
