@@ -46,7 +46,7 @@ stages:
           - script: |
               cat *log
             displayName: 'Print log output'
-            workingDirectory: /home/vsts/.azcopy/
+            workingDirectory: C:/Users/VssAdministrator/.azcopy
 
           - task: AzureCLI@2
             displayName: 'AzCopy via Azure CLI'
