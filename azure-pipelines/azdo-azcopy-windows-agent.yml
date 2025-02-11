@@ -9,24 +9,50 @@ trigger:
 
 #trigger: none
 
-pool:
-  vmImage: 'windows-latest'
-
 variables:
   - group: sas-token-group
+  - name: 'storageAccount'
+    value: 'storterraformd01'
+  - name: 'container'
+    value: 'azcopycontainer'
 
 stages:
-  - stage: 'azcopy'
-    displayName: 'AzCopy Assets'
+  - stage: 'AzCopy_Ubuntu_Agent'
+    displayName: 'AzCopy Ubuntu Agent'
     jobs:
-      - job: 'AzCopy_Assets'
-        displayName: 'AzCopy Assets'
+      - job: 'Build'
+        displayName: 'AzCopy Ubuntu Agent'
+        pool:
+          vmImage: 'windows-latest'
+
         steps:
-          - task: AzureFileCopy@4
+          - checkout: self
+            fetchDepth: 0
+
+          - script: |
+              azcopy env
+            displayName: 'Print AzCopy ENV'
+
+          - task: PowerShell@2
+            displayName: 'AzCopy Ubuntu Agent'
             inputs:
-              SourcePath: '$(System.DefaultWorkingDirectory)/test-images/*'
+              targetType: 'inline'
+              script: |
+                azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu?$(sas-token)" --recursive=true
+              pwsh: true
+            continueOnError: true
+
+
+          - script: |
+              cat *log
+            displayName: 'Print log output'
+            workingDirectory: /home/vsts/.azcopy/
+
+          - task: AzureCLI@2
+            displayName: 'AzCopy via Azure CLI'
+            inputs:
               azureSubscription: 'AzureServiceConnection'
-              Destination: 'AzureBlob'
-              storage: 'storterraformd01'
-              ContainerName: 'azcopycontainer'
-              BlobPrefix: 'windows-agent'
+              scriptType: 'pscore'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu-az-cli?$(sas-token)" --recursive=true

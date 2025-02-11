@@ -23,7 +23,7 @@ stages:
       - job: 'Build'
         displayName: 'AzCopy Ubuntu Agent'
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'windows-latest'
 
         steps:
           - checkout: self
@@ -33,10 +33,15 @@ stages:
               azcopy env
             displayName: 'Print AzCopy ENV'
 
-          - script: |
-              azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu?$(sas-token)" --recursive=true
+          - task: PowerShell@2
             displayName: 'AzCopy Ubuntu Agent'
+            inputs:
+              targetType: 'inline'
+              script: |
+                azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu?$(sas-token)" --recursive=true
+              pwsh: true
             continueOnError: true
+
 
           - script: |
               cat *log
