@@ -27,7 +27,7 @@ jobs:
 
       - name: Az Copy Test
         continue-on-error: true
-        shell: pwsh
+        shell: bash
         run: |
           azcopy copy "./seed_images/*" "https://${{ env.storageAccount }}.blob.core.windows.net/${{ env.container }}/gha-ubuntu?$SAS_TOKEN" --recursive=true
         env:
