@@ -1,4 +1,4 @@
-﻿name: AzCopy Ubuntu Agent
+name: AzCopy Ubuntu Agent
 
 on:
   push:
