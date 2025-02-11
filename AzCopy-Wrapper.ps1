@@ -7,18 +7,17 @@
 
 )
 
-cd $PSScriptRoot
-
-$TargetUrl = "https://$StorageAccount.blob.core.windows.net/$StorageContainer/$TargetFolderPrefix`?$SasToken"
+Set-Location $PSScriptRoot
 
 $SourceFolderAbsPath = (Get-Item $SourceFolder).FullName
-
 Write-Host "Source folder Abs Path: $SourceFolderAbsPath"
-Write-Host "Target url: $TargetUrl"
 
 $SourceFolderForAzCopy = "$SourceFolderAbsPath\*"
-
 Write-Host "Source folder for Az Copy: $SourceFolderForAzCopy"
+
+$TargetUrl = "https://$StorageAccount.blob.core.windows.net/$StorageContainer/$TargetFolderPrefix`?$SasToken"
+Write-Host "Target prfix: $TargetFolderPrefix"
+Write-Host "Target url: $TargetUrl"
 
 azcopy copy "$SourceFolderForAzCopy" "$TargetUrl" --recursive=true
 
