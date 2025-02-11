@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string] $SourceFolder = ".\test-images",
     [string] $StorageAccount = "storterraformd01",
     [string] $StorageContainer = "azcopycontainer",
