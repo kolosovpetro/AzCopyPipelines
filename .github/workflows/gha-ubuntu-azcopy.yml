@@ -26,20 +26,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: Az Copy Test
         continue-on-error: true
         shell: pwsh
         run: |
-          $Date = (Get-Date).AddDays(1).ToString('yyyy-MM-dd')
-          $key = $( az storage account keys list --resource-group ${{ env.rgName }} --account-name ${{ env.storageAccount }} --query [0].value -o tsv )
-          az storage container create --name ${{ env.container }}  --account-name ${{ env.storageAccount }} --account-key "$key"
-          $sas = $( az storage container generate-sas --name ${{ env.container }} --expiry $Date --permissions "racwdli" --account-name ${{ env.storageAccount }} --account-key "$key" ).Replace("`"","")
-          azcopy copy "./seed_images/*" "https://${{ env. storageAccount }}.blob.core.windows.net/${{ env.container }}/gha-ubuntu?$sas" --recursive=true
+          azcopy copy "./seed_images/*" "https://${{ env. storageAccount }}.blob.core.windows.net/${{ env.container }}/gha-ubuntu?$SAS_TOKEN" --recursive=true
+        env:
+          SAS_TOKEN: ${{ secrets.SAS_TOKEN }}
 
       - name: Print log
         working-directory: /home/runner/.azcopy
