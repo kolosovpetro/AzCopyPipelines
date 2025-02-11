@@ -16,11 +16,11 @@ variables:
   - name: 'container'
     value: 'azcopycontainer'
   - name: 'StageName'
-    value: 'AzCopy_Ubuntu_Agent_Test'
+    value: 'AzCopy_Windows_Agent_Test'
   - name: AgentImage
-    value: ubuntu-latest
+    value: windows-latest
   - name: AzCopyLogPath
-    value: '/home/vsts/.azcopy/'
+    value: 'C:/Users/VssAdministrator/.azcopy'
 
 stages:
   - stage: ${{ variables.StageName }}
@@ -54,7 +54,7 @@ stages:
                 -StorageAccount "${{ variables.storageAccount }}"
                 -StorageContainer "${{ variables.container }}"
                 -SasToken "$(sas-token)"
-                -TargetFolderPrefix "from-azdo-ubuntu"
+                -TargetFolderPrefix "from-azdo-windows"
 
           - task: PowerShell@2
             displayName: 'Print AzCopy Logs ${{ variables.AgentImage }}'

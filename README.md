@@ -1,10 +1,22 @@
-# Az Copy Pipelines
+# `AzCopy` &mdash; Example via Azure Pipelines
 
 Azure pipelines and GitHub Actions involving AzCopy utility.
 
-- Trello task: https://trello.com/c/F7ceTapf
-- Azure DevOps project: https://dev.azure.com/PetroKolosovProjects/AzCopyPipelines
-- AzCLI GitHub Action: https://github.com/marketplace/actions/azure-cli-action
+- https://dev.azure.com/PetroKolosovProjects/AzCopyPipelines
+
+## Steps
+
+- Create a container for AzCopy tests
+- Generate SAS token for test container
+- Configure SAS token inside variable group in Azure DevOps
+- Configure SAS token inside secrets in GitHub
+
+## AzCopy log file locations
+
+- Azure DevOps Windows: `C:/Users/VssAdministrator/.azcopy`
+- Azure DevOps Linux: `/home/vsts/.azcopy/`
+- GitHub Actions Windows: `C:/Users/runneradmin/.azcopy`
+- GitHub Actions Linux: `/home/runner/.azcopy`
 
 ## Install AzCopy Linux
 

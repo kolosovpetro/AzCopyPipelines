@@ -1,0 +1,51 @@
+name: AzCopy Windows Agent Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  azcopy_windows_agent_test:
+    name: AzCopy_Windows_Agent_Test
+    runs-on: windows-latest
+
+    env:
+      STORAGE_ACCOUNT: storterraformd01
+      CONTAINER: azcopycontainer
+      AZCOPY_LOG_PATH: C:/Users/runneradmin/.azcopy
+      SAS_TOKEN: ${{ secrets.SAS_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Print AzCopy Environment
+        shell: pwsh
+        run: azcopy env
+
+      - name: Run AzCopy PowerShell Script
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          ./AzCopy-Wrapper.ps1 `
+            -SourceFolder "${{ github.workspace }}/test-images" `
+            -StorageAccount "${{ env.STORAGE_ACCOUNT }}" `
+            -StorageContainer "${{ env.CONTAINER }}" `
+            -SasToken "${{ env.SAS_TOKEN }}" `
+            -TargetFolderPrefix "from-gha-windows"
+
+      - name: Print AzCopy Logs
+        shell: pwsh
+        run: |
+          $LogPath = "${{ env.AZCOPY_LOG_PATH }}"
+          $LogFiles = Get-ChildItem -Path $LogPath -Filter "*.log"
+          foreach ($file in $LogFiles) {
+              Write-Host "`n--- Contents of: $($file.FullName) ---`n"
+              Get-Content $file.FullName
+          }
