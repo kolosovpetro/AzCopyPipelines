@@ -32,7 +32,6 @@ stages:
           - script: |
               azcopy env
             displayName: 'Print AzCopy ENV'
-            workingDirectory: /home/vsts/.azcopy/
 
           - script: |
               azcopy copy "./test-images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu?$(sas-token)" --recursive=true
