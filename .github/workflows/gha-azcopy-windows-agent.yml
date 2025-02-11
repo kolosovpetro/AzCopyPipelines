@@ -9,14 +9,14 @@ on:
       - master
 
 jobs:
-  azcopy_ubuntu_agent_test:
-    name: AzCopy_Ubuntu_Agent_Test
-    runs-on: ubuntu-latest
+  azcopy_windows_agent_test:
+    name: AzCopy_Windows_Agent_Test
+    runs-on: windows-latest
 
     env:
       STORAGE_ACCOUNT: storterraformd01
       CONTAINER: azcopycontainer
-      AZCOPY_LOG_PATH: /home/runner/.azcopy
+      AZCOPY_LOG_PATH: C:/Users/VssAdministrator/.azcopy
       SAS_TOKEN: ${{ secrets.SAS_TOKEN }}
 
     steps:
@@ -38,7 +38,7 @@ jobs:
             -StorageAccount "${{ env.STORAGE_ACCOUNT }}" `
             -StorageContainer "${{ env.CONTAINER }}" `
             -SasToken "${{ env.SAS_TOKEN }}" `
-            -TargetFolderPrefix "from-gha-ubuntu"
+            -TargetFolderPrefix "from-gha-windows"
 
       - name: Print AzCopy Logs
         shell: pwsh
