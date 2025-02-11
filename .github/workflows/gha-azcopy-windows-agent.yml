@@ -1,4 +1,4 @@
-name: AzCopy Ubuntu Agent Test
+name: AzCopy Windows Agent Test
 
 on:
   push:
