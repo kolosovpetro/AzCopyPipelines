@@ -12,7 +12,7 @@ Set-Location $PSScriptRoot
 $SourceFolderAbsPath = (Get-Item $SourceFolder).FullName
 Write-Host "Source folder Abs Path: $SourceFolderAbsPath"
 
-$SourceFolderForAzCopy = "$SourceFolderAbsPath\*"
+$SourceFolderForAzCopy = "$SourceFolderAbsPath/*"
 Write-Host "Source folder for Az Copy: $SourceFolderForAzCopy"
 
 $TargetUrl = "https://$StorageAccount.blob.core.windows.net/$StorageContainer/$TargetFolderPrefix`?$SasToken"
