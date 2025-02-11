@@ -1,0 +1,32 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - '*'
+
+#trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: sas-token-group
+
+stages:
+  - stage: 'azcopy'
+    displayName: 'AzCopy Assets'
+    jobs:
+      - job: 'AzCopy_Assets'
+        displayName: 'AzCopy Assets'
+        steps:
+          - task: AzureFileCopy@4
+            inputs:
+              SourcePath: '$(System.DefaultWorkingDirectory)/seed_images/*'
+              azureSubscription: 'AzureServiceConnection'
+              Destination: 'AzureBlob'
+              storage: 'storterraformd01'
+              ContainerName: 'azcopycontainer'
+              BlobPrefix: 'windows-agent'

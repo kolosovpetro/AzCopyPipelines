@@ -1,10 +1,16 @@
-# Az Copy Pipelines
+# `AzCopy` &mdash; Example via Azure Pipelines
 
 Azure pipelines and GitHub Actions involving AzCopy utility.
 
-- Trello task: https://trello.com/c/F7ceTapf
-- Azure DevOps project: https://dev.azure.com/PetroKolosovProjects/AzCopyPipelines
-- AzCLI GitHub Action: https://github.com/marketplace/actions/azure-cli-action
+## Azure DevOps tasks used
+
+- [AzureFileCopy@4 - Azure file copy v4 task](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-file-copy-v4?view=azure-pipelines)
+- [AzureCLI@2 - Azure CLI v2 task](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines)
+
+## Steps
+
+- Configure SAS token inside variable group in Azure DevOps
+- Configure ARM service connection in Azure DevOps
 
 ## Install AzCopy Linux
 

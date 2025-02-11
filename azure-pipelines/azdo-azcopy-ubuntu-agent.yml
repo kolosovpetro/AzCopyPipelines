@@ -10,13 +10,11 @@ trigger:
 #trigger: none
 
 variables:
-  - group: SAS_GROUP
-  - name: 'rgName'
-    value: 'rg-tf-state102-uat02'
+  - group: sas-token-group
   - name: 'storageAccount'
-    value: 'sttfstate259'
+    value: 'storterraformd01'
   - name: 'container'
-    value: 'azcopyazpipelineubuntu'
+    value: 'azcopycontainer'
 
 stages:
   - stage: 'AzCopy_Ubuntu_Agent'
@@ -26,32 +24,26 @@ stages:
         displayName: 'AzCopy Ubuntu Agent'
         pool:
           vmImage: 'ubuntu-latest'
-        
+
         steps:
           - checkout: self
             fetchDepth: 0
 
           - script: |
-              az storage container create --name $(container) --account-name $(storageAccount) --sas-token "$(SAS)"
-              azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)?$(SAS)" --recursive=true
+              azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu?$(sas-token)" --recursive=true
             displayName: 'AzCopy Ubuntu Agent'
             continueOnError: true
 
           - script: |
               cat *log
+            displayName: 'Print log output'
             workingDirectory: /home/vsts/.azcopy/
 
           - task: AzureCLI@2
             displayName: 'AzCopy via Azure CLI'
             inputs:
-              azureSubscription: 'AzCopyARM'
+              azureSubscription: 'AzureServiceConnection'
               scriptType: 'pscore'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                $Date = (Get-Date).AddDays(1).ToString('yyyy-MM-dd')
-                $key = $( az storage account keys list --resource-group $(rgName) --account-name $(storageAccount) --query [0].value -o tsv )
-                Write-Output "Key: $key"
-                az storage container create --name $(container)  --account-name $(storageAccount) --account-key "$key"
-                $sas = $( az storage container generate-sas --name $(container) --expiry $Date --permissions "racwdli" --account-name $(storageAccount) --account-key "$key" )
-                Write-Output "SAS: $sas"
-                azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/from_az_cli?$(sas)" --recursive=true
+                azcopy copy "./seed_images/*" "https://$(storageAccount).blob.core.windows.net/$(container)/ubuntu-az-cli?$(sas-token)" --recursive=true
