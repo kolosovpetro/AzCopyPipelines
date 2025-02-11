@@ -8,18 +8,16 @@ on:
     branches:
       - master
 
-env:
-  STORAGE_ACCOUNT: storterraformd01
-  CONTAINER: azcopycontainer
-  STAGE_NAME: AzCopy_Ubuntu_Agent_Test
-  AGENT_IMAGE: ubuntu-latest
-  AZCOPY_LOG_PATH: /home/runner/.azcopy
-  SAS_TOKEN: ${{ secrets.SAS_TOKEN }} # Use GitHub Secrets for security
-
 jobs:
   azcopy_ubuntu_agent_test:
-    name: ${{ env.STAGE_NAME }}
-    runs-on: ${{ env.AGENT_IMAGE }}
+    name: AzCopy_Ubuntu_Agent_Test
+    runs-on: ubuntu-latest
+
+    env:
+      STORAGE_ACCOUNT: storterraformd01
+      CONTAINER: azcopycontainer
+      AZCOPY_LOG_PATH: /home/runner/.azcopy
+      SAS_TOKEN: ${{ secrets.SAS_TOKEN }}
 
     steps:
       - name: Checkout repository
